@@ -1,5 +1,6 @@
-const questionsContainer = document.getElementById('questionsContainer')
-const btnStart = document.querySelector('.btnStart')
+const questionsContainer = document.getElementById('questionsContainer');
+const btnStart = document.querySelector('.btnStart');
+let offset = 0;
 let questions = [
   {
     question: "Какое пиво больше всего по душе?",
@@ -42,7 +43,50 @@ let questions = [
         answer: "Да мне есть 18"
       },
     ]
+  },
+  {
+    question: "Сколько пива в тюрьме?",
+    answers: [
+      {
+        answer: "12"
+      },
+      {
+        answer: "Синий Майбах 3D"
+      },
+      {
+        answer: "Пива Артёма Елизара"
+      },
+    ]
+  },
+  {
+    question: "Вы любите кокаколу?",
+    answers: [
+      {
+        answer: "Да"
+      },
+      {
+        answer: "Нет"
+      },
+      {
+        answer: "Да мне есть 18"
+      },
+    ]
+  },
+  {
+    question: "Готовы?",
+    answers: [
+      {
+        answer: "Да"
+      },
+      {
+        answer: "Не"
+      },
+      {
+        answer: "Да мне есть 18"
+      },
+    ]
   }
+
 ];
 
 
@@ -65,6 +109,8 @@ function createQuestionsAndAnswers(questionsList){
         questionDiv.remove()
       })
     }
+    const endBtn = document.createElement('button');
+    endBtn.innerHTML = 'Получить приз!'
 
     questionDiv.append(question)
     questionDiv.append(answersDiv)
@@ -79,5 +125,4 @@ btnStart.addEventListener('click', ()=> {
   btnStart.remove();
   createQuestionsAndAnswers(questions)
 })
-
 
