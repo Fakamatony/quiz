@@ -1,7 +1,30 @@
 const questionsContainer = document.getElementById('questionsContainer');
-const btnStart = document.querySelector('.btnStart');
+const questionsContainerAll = document.getElementById('questionsContainerAll');
 let offset = 0;
+let circleBlack;
+let circleBlackOffset = -12;
 let questions = [
+  {
+    answers: [
+      {
+        answer: 'Начать!',
+        classList: ['btnStart'],
+        action: ()=>{
+          circleBlack = document.createElement('div');
+          circleBlack.classList.add('circleBlack')
+          questionsContainerAll.prepend(circleBlack)
+          for (let i = 0; i < questions.length; i++) {
+            if (questions[i].question)
+              for (let d = 0; d < 1; d++) {
+                let circle = document.createElement('div');
+                circle.classList.add('circle')
+                questionsContainerAll.prepend(circle)
+              }
+          }
+        }
+      }
+    ]
+  },
   {
     question: "Какое пиво больше всего по душе?",
     answers: [
@@ -85,44 +108,66 @@ let questions = [
         answer: "Да мне есть 18"
       },
     ]
+  },
+  {
+    answers: [
+      {
+        answer: 'Получить приз!',
+        classList:['btnEnd'],
+        action: ()=>{
+          document.location.href="https://sun9-21.userapi.com/impg/aYZIcUG3IO2KFX5IxacwJq4ekAbojq_aLERr5A/SkqqwM8NAxs.jpg?size=601x604&quality=96&sign=2b3f034e105b6d2c101942131381a694&type=album"
+        }
+      }
+    ]
   }
-
 ];
 
-
-
 function createQuestionsAndAnswers(questionsList){
+  const sliderLine = document.createElement("div");
+  sliderLine.classList.add('sliderLine')
+
+
 
 
   for (let i = 0; i < questionsList.length; i++){
     const questionDiv = document.createElement('div');
     questionDiv.classList.add('questionDiv')
     const answersDiv = document.createElement('div');
-    const question = document.createElement('p');
-    question.innerHTML = questionsList[i].question;
+
+    let question;
+    if (questionsList[i].question){
+      question = document.createElement('p');
+      question.innerHTML = questionsList[i].question;
+      questionDiv.append(question)
+    }
+
     for (let j = 0; j < questionsList[i].answers.length; j++){
-      const answer = document.createElement('button');
-      answer.classList.add('answer')
-      answer.innerHTML = questionsList[i].answers[j].answer;
-      answersDiv.append(answer)
-      answer.addEventListener('click', ()=>{
-        questionDiv.remove()
+      const answerNode = document.createElement('button');
+      const {classList,action,answer} = questionsList[i].answers[j]
+      answerNode.classList.add('answer')
+      answerNode.innerHTML = answer;
+      if (classList){
+        classList.forEach((answerClass)=>{
+          answerNode.classList.add(answerClass)
+        })
+      }
+      answersDiv.append(answerNode)
+      answerNode.addEventListener('click', ()=>{
+        if (action) action();
+        offset += 250
+        sliderLine.style.left = -offset + "px";
+        circleBlackOffset += 12
+        circleBlack.style.left = circleBlackOffset + "px"
+        if (circleBlackOffset > 60){
+          questionsContainerAll.style.opacity = '0';
+        }
       })
     }
-    const endBtn = document.createElement('button');
-    endBtn.innerHTML = 'Получить приз!'
-
-    questionDiv.append(question)
     questionDiv.append(answersDiv)
-    questionsContainer.append(questionDiv)
+    sliderLine.append(questionDiv)
+    questionsContainer.append(sliderLine)
   }
 
 }
-
-
-
-btnStart.addEventListener('click', ()=> {
-  btnStart.remove();
-  createQuestionsAndAnswers(questions)
-})
+createQuestionsAndAnswers(questions)
 
